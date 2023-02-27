@@ -10,38 +10,41 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         HStack{
-            Card()
-            Card()
-            Card()
-            Card()
+            CardView()
+            CardView()
+            CardView()
+            CardView()
         }
                 .padding(.horizontal)
     }
 }
 
-struct Card: View {
-    var isVirado: Bool = false
-    var backgroundCard = RoundedRectangle(cornerRadius: 25.0)
+struct CardView: View {
+    @State var isVirado: Bool = false
+    let card = RoundedRectangle(cornerRadius: 25.0)
     
     var body: some View{
-        if isVirado {
             ZStack {
-                backgroundCard
+                if isVirado {
+                card
                     .fill(.white)
                 
-                backgroundCard
+                card
                     .stroke(lineWidth: 3)
                     .foregroundColor(.red)
                 
                 Text("🍎")
                     .font(.largeTitle)
             }
-        }
+                else {
+                    card
+                        .fill(.red)
+                }
+            }
+            .onTapGesture{
+                isVirado = !isVirado
+            }
         
-        else {
-            backgroundCard
-                .fill(.red)
-        }
     }
 }
 
