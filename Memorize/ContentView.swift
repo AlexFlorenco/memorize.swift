@@ -8,43 +8,80 @@
 import SwiftUI
 
 struct ContentView: View {
+    var arrayEmojis = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐻‍❄️", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵", "🐔", "🐙", "🐠", "🐲", "🐧", "🐴", "🦆", "🦋", "🐝", "🦀", "🐍", "🐢"]
+    @State var countEmojis = 28
+    
     var body: some View {
-        HStack{
-            CardView()
-            CardView()
-            CardView()
-            CardView()
+        VStack{
+            ScrollView{
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 65))]) {
+                    ForEach (arrayEmojis[0..<countEmojis], id: \.self){ emoji in
+                        CardView(conteudo: emoji)
+                            .aspectRatio(2/2, contentMode: .fit)
+                    }
+                }
+            }
+            .foregroundColor(.red)
+            Spacer()
+            HStack{
+                remove
+                Spacer()
+                add
+            }
+            .font(/*@START_MENU_TOKEN@*/.largeTitle/*@END_MENU_TOKEN@*/)
+            .padding(.horizontal)
         }
-                .padding(.horizontal)
+        .padding(.horizontal)
+    }
+    
+    var add: some View{
+        Button{
+                if countEmojis < arrayEmojis.count{
+                    countEmojis += 1
+                }
+            }
+            label: {
+                    Image(systemName: "plus.circle")
+            }
+    }
+    
+    var remove: some View{
+        Button {
+            if countEmojis > 1{
+                countEmojis -= 1
+            }
+        }
+        label: {
+            Image(systemName: "minus.circle")
+        }
     }
 }
 
 struct CardView: View {
+    var conteudo: String
     @State var isVirado: Bool = false
-    let card = RoundedRectangle(cornerRadius: 25.0)
     
-    var body: some View{
-            ZStack {
-                if isVirado {
-                card
-                    .fill(.white)
+    var body: some View {
+        ZStack {
+            let card = RoundedRectangle(cornerRadius: 20)
                 
+            if isVirado {
                 card
-                    .stroke(lineWidth: 3)
-                    .foregroundColor(.red)
-                
-                Text("🍎")
+                    .fill()
+                    .foregroundColor(.white)
+                card
+                    .strokeBorder(lineWidth: 3)
+                Text(conteudo)
                     .font(.largeTitle)
             }
-                else {
-                    card
-                        .fill(.red)
-                }
+            else {
+                card
+                    .fill()
             }
-            .onTapGesture{
-                isVirado = !isVirado
-            }
-        
+        }
+        .onTapGesture{
+            isVirado = !isVirado
+        }
     }
 }
 
